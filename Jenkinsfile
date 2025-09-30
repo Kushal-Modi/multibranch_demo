@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven-3.9'   // Make sure this name matches Jenkins Maven installation
-        jdk 'Java-17'       // Make sure this matches Jenkins JDK installation
+        jdk 'Java-17'
+        maven 'Maven-3.9'
     }
 
     stages {
@@ -24,11 +24,12 @@ pipeline {
                 bat 'mvn test'
             }
         }
-         stage('Deploy to Nexus') {
+
+        stage('Deploy to Nexus') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'nexus-creds', usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
                     bat """
-                        mvn deploy -Dnexus.user=%NEXUS_USER% -Dnexus.password=%NEXUS_PASS%
+                        mvn deploy -Dnexus.username=%NEXUS_USER% -Dnexus.password=%NEXUS_PASS%
                     """
                 }
             }
