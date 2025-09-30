@@ -7,6 +7,7 @@
     <groupId>com.example</groupId>
     <artifactId>java-mbp-demo</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
     <dependencies>
         <!-- Simple JUnit for tests -->
@@ -30,6 +31,30 @@
                     <target>17</target>
                 </configuration>
             </plugin>
+
+            <!-- Deploy plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>3.1.1</version>
+                <configuration>
+                    <repositoryId>nexus</repositoryId>
+                    <url>http://localhost:8081/repository/maven-releases/</url>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
+
+    <!-- Nexus deployment repositories -->
+    <distributionManagement>
+        <repository>
+            <id>nexus</id>
+            <url>http://localhost:8081/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>nexus</id>
+            <url>http://localhost:8081/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
 </project>
