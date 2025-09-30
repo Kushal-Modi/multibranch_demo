@@ -24,5 +24,14 @@ pipeline {
                 bat 'mvn test'
             }
         }
+         stage('Deploy to Nexus') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'nexus-creds', usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
+                    bat """
+                        mvn deploy -Dnexus.user=%NEXUS_USER% -Dnexus.password=%NEXUS_PASS%
+                    """
+                }
+            }
+        }
     }
 }
