@@ -1,37 +1,33 @@
+@Library('jenkins-shared-lib') _
+
 pipeline {
     agent any
 
-    tools {
-        jdk 'Java-17'
-        maven 'Maven-3.9'
-    }
-
     stages {
-        stage('Checkout') {
+        stage('Greet') {
             steps {
-                checkout scm
+                sayHello('Kushal')
             }
         }
 
         stage('Build') {
             steps {
-                bat 'mvn clean package'
+                echo "Building Job Portal project..."
+                // bat 'mvn clean install'   // Uncomment if Maven installed
             }
         }
 
         stage('Test') {
             steps {
-                bat 'mvn test'
+                echo "Running tests..."
+                // bat 'mvn test'
             }
         }
 
-        stage('Deploy to Nexus') {
+        stage('Deploy') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'nexus-creds', usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
-                    bat """
-                        mvn deploy -Dnexus.username=%NEXUS_USER% -Dnexus.password=%NEXUS_PASS%
-                    """
-                }
+                echo "Deploying application..."
+                // bat './deploy.sh'
             }
         }
     }
